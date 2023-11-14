@@ -1,0 +1,6 @@
+[ag]
+agent ansible_host=192.168.56.12 ansible_private_key_file=/home/user777/Ansible_labs_V2/Laba3/.vagrant/machines/agent/virtualbox/private_key
+[db]
+pg ansible_host=192.168.56.13 ansible_private_key_file=/home/user777/Ansible_labs_V2/Laba3/.vagrant/machines/pg/virtualbox/private_key
+[web]
+interface ansible_host=192.168.56.14 ansible_private_key_file=/home/user777/Ansible_labs_V2/Laba3/.vagrant/machines/interface/virtualbox/private_key

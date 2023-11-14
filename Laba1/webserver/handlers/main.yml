@@ -1,0 +1,14 @@
+---
+# handlers file for webserver
+
+- name: Start and enabled nginx
+  ansible.builtin.systemd:
+    name: nginx
+    state: restarted
+    enabled: true
+
+- name: Start and enabled php-fpm
+  ansible.builtin.systemd:
+    name: php-fpm
+    state: restarted
+    enabled: true

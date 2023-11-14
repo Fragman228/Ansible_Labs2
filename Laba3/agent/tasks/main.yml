@@ -1,0 +1,43 @@
+---
+# tasks file for agent
+
+- name: Download node_exporter
+  ansible.builtin.get_url:
+    url: https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-amd64.tar.gz
+    dest: /home/vagrant
+    mode: '0440'
+
+- name: Unarchive a node_exporter-1.5.0.linux-amd64.tar.gz into /home/vagrant that is already on the remote machine
+  ansible.builtin.unarchive:
+    src: /home/vagrant/node_exporter-1.5.0.linux-amd64.tar.gz
+    dest: /home/vagrant
+    remote_src: yes
+
+
+- name: Add the user 'nodeusr' with a bash shell
+  ansible.builtin.user:
+    name: nodeusr
+    shell: /bin/bash
+
+- name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: /home/vagrant/node_exporter-1.5.0.linux-amd64/node_exporter
+    dest: /usr/local/bin/
+    remote_src: yes
+
+- name: Template a file to /etc/systemd/system/node_exporter.service
+  ansible.builtin.template:
+    src: node_exporter.service
+    dest: /etc/systemd/system/node_exporter.service
+    owner: root
+    group: root
+
+- name: Put SELinux in permissive mode, logging actions that would be blocked.
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: Enable service node_exporter, and not touch the state
+  ansible.builtin.service:
+    name: node_exporter
+    state: restarted

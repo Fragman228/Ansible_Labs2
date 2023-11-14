@@ -1,0 +1,16 @@
+---
+# tasks file for pg
+
+- name: Install the latest version of golang-github-prometheus
+  ansible.builtin.dnf:
+    name: golang-github-prometheus
+    state: latest
+  notify: 
+    - Enable service prometheus, and not touch the state
+
+- name: Template a file to /etc/prometheus/prometheus.yml
+  ansible.builtin.template:
+    src: prometheus.yml
+    dest: /etc/prometheus/prometheus.yml
+    owner: root
+    group: root

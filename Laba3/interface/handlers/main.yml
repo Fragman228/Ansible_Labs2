@@ -1,0 +1,7 @@
+---
+# handlers file for interface
+
+- name: Enable service grafana-server, and not touch the state
+  ansible.builtin.service:
+    name: grafana-server
+    state: restarted

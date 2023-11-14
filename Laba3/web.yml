@@ -1,0 +1,25 @@
+---
+
+- name: Disabled selinux
+  hosts: db
+  become: true
+  roles:
+    - disable-selinux
+
+- name: Agent
+  hosts: ag
+  become: true
+  roles:
+    - agent
+
+- name: Pg
+  hosts: db
+  become: true
+  roles: 
+    - pg
+
+- name: interfacee
+  hosts: web
+  become: true
+  roles: 
+    - interface

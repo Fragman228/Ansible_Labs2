@@ -1,0 +1,18 @@
+---
+
+- name: Install the latest version of nginx
+  ansible.builtin.dnf:
+    name: nginx
+    state: latest
+  
+- name: Install the latest version of php-fpm
+  ansible.builtin.dnf:
+    name: php-fpm
+    state: latest
+
+- name: Install the latest version of php-pgsql
+  ansible.builtin.dnf:
+    name: php-pgsql
+    state: latest
+
+  

@@ -1,0 +1,7 @@
+---
+
+- name: Install nginx and php for webserver
+  hosts: webserver
+  become: true
+  roles:
+    - webserver

@@ -1,0 +1,9 @@
+---
+# tasks file for interface
+
+- name: Install the latest version of grafana
+  ansible.builtin.dnf:
+    name: grafana
+    state: latest
+  notify: 
+    - Enable service grafana-server, and not touch the state
