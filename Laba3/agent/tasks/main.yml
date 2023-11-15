@@ -5,7 +5,6 @@
   ansible.builtin.get_url:
     url: https://github.com/prometheus/node_exporter/releases/download/v1.5.0/node_exporter-1.5.0.linux-amd64.tar.gz
     dest: /home/vagrant
-    mode: '0440'
 
 - name: Unarchive a node_exporter-1.5.0.linux-amd64.tar.gz into /home/vagrant that is already on the remote machine
   ansible.builtin.unarchive:
@@ -13,11 +12,16 @@
     dest: /home/vagrant
     remote_src: yes
 
+- name: Ensure group "nodeusr" exists
+  ansible.builtin.group:
+    name: nodeusr
+    state: present
 
 - name: Add the user 'nodeusr' with a bash shell
   ansible.builtin.user:
     name: nodeusr
     shell: /bin/bash
+    groups: nodeusr
 
 - name: Copy file with owner and permissions
   ansible.builtin.copy:
@@ -25,17 +29,22 @@
     dest: /usr/local/bin/
     remote_src: yes
 
+- name: Change node_exporter ownership, group and permissions
+  ansible.builtin.file:
+    path: /usr/local/bin/node_exporter
+    owner: root
+    group: root
+    mode: '0777'
+  tags: 
+    - mode
+    - node
+
 - name: Template a file to /etc/systemd/system/node_exporter.service
   ansible.builtin.template:
-    src: node_exporter.service
+    src: node_exporter.service.j2
     dest: /etc/systemd/system/node_exporter.service
     owner: root
     group: root
-
-- name: Put SELinux in permissive mode, logging actions that would be blocked.
-  selinux:
-    policy: targeted
-    state: permissive
 
 - name: Enable service node_exporter, and not touch the state
   ansible.builtin.service:

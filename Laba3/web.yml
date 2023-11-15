@@ -1,7 +1,7 @@
 ---
 
 - name: Disabled selinux
-  hosts: db
+  hosts: all
   become: true
   roles:
     - disable-selinux
